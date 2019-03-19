@@ -1,0 +1,11 @@
+stages:
+  - Test
+
+Poll Jenkins:
+  tags: ["mintel"]
+  stage: Test
+  image: mintel/gitlab-jenkins-poller
+  script:
+    - /app/poll-jenkins.py
+  variables:
+    GIT_STRATEGY: none
