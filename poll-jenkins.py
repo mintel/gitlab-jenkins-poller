@@ -7,6 +7,7 @@ import os
 # this is because our Jenkins instance uses a self signed SSL cert
 os.environ["PYTHONHTTPSVERIFY"] = os.environ.get("PYTHONHTTPSVERIFY", "0")
 from time import sleep
+import datetime
 from pprint import pprint
 from requests import exceptions
 
@@ -47,6 +48,8 @@ def find_build(job, commit):
 server = jenkins.Jenkins(jenkins_host, username=jenkins_user, password=jenkins_password)
 job = "%s/%s" % (multibranch_job, branch)
 
+print("Waiting to find build…")
+start = datetime.datetime.now()
 build = None
 while True:
     try:
@@ -57,6 +60,9 @@ while True:
         break
     sleep(10)
 
+print(f"Time to find build {datetime.datetime.now() - start}")
+start = datetime.datetime.now()
+
 while True:
     try:
         build = server.get_build_info(job, int(build["id"]))
@@ -65,6 +71,8 @@ while True:
     if build["result"] is not None:
         break
     sleep(10)
+
+print(f"Time to finish build {datetime.datetime.now() - start}")
 
 result = build["result"]
 pprint(build)
