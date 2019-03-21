@@ -67,5 +67,5 @@ while True:
     sleep(10)
 
 result = build["result"]
-print(result)
+print(build)
 exit(0 if result == "SUCCESS" else 1)
