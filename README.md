@@ -16,5 +16,7 @@ The job then uses the provided variables (including ones GitLab injects) to find
 
 This has no timeouts, so relies on the GitLab project's timeout settings which will terminate the pipeline if it takes too long.
 
+If the password is an API key for a read-only account, then the `JENKINS_USER` and `JENKINS_PASSWORD` may not really be secrets - if they aren't you can enter them as variables. This will let the poll job work for non-protected branches.
+
 ## Possible future work
 The image is hundreds of megabytes, it could be stripped down to a few megabytes by using go and [distroless](https://github.com/GoogleContainerTools/distroless) to reduce download+cache cost.
