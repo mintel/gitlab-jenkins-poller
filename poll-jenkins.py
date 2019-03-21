@@ -62,7 +62,7 @@ while True:
         build = server.get_build_info(job, int(build["id"]))
     except exceptions.RequestException:
         pass
-    if "result" in build:
+    if build["result"] is not None:
         break
     sleep(10)
 
