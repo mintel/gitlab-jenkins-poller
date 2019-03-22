@@ -54,7 +54,7 @@ build = None
 while True:
     try:
         build = find_build(job, commit)
-    except exceptions.RequestException:
+    except (exceptions.RequestException, jenkins.JenkinsException):
         pass
     if build:
         break
@@ -68,7 +68,7 @@ while True:
         build = server.get_build_info(job, int(build["id"]))
     except exceptions.RequestException:
         pass
-    if build["result"] is not None:
+    if build["result"] is not None and not build["building"]:
         break
     sleep(10)
 
