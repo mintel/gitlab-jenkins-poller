@@ -21,7 +21,7 @@ jenkins_host = os.environ.get("JENKINS_HOST", "https://jenkins.mintel.ad")
 # e.g. EVERESTUI_jobs/web
 multibranch_job = os.environ["MULTIBRANCH_JOB"]
 # control the output
-show_debug_info = os.environ.get("JENKINS_DEBUG", True)
+show_debug_info = not(os.environ.get("JENKINS_NODEBUG", False))
 # show Jenkins console log, eg to parse coverage
 show_console_log = os.environ.get("JENKINS_CONSOLE_OUTPUT", False)
 # e.g. CFD-4563
