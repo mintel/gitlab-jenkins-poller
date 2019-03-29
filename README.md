@@ -11,6 +11,8 @@ See the `.gitlab-ci.yml.example` for what you need to add to your `.gitlab-ci.ym
  * `JENKINS_HOST` (optional) - defaults to `https://jenkins.mintel.ad`
  * `MULTIBRANCH_JOB` - path that Jenkins job for the target repository, e.g. `EVERESTUI_jobs/web`
  * `PYTHONHTTPSVERIFY` (optional) - defaults to `0` so no SSL verification occurs so self-signed certificates can be used
+ * `JENKINS_NODEBUG` (optional) - Don't output debug info about the job. Defaults to off to preserve existing behaviour.
+ * `JENKINS_CONSOLE_OUTPUT` (optional) - Display the Jenkins console output. Defaults to off to preserve existing behaviour.
 
 The job then uses the provided variables (including ones GitLab injects) to find which particular job is for this branch (e.g. `EVERESTUI_jobs/web/CFD-4563`) and it then polls the job looking for the latest build for the current commit. Once that is found, it polls the build until it has a result where it will exit with 0 if successful, or 1 otherwise.
 

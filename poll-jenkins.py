@@ -20,6 +20,10 @@ jenkins_password = os.environ["JENKINS_PASSWORD"]
 jenkins_host = os.environ.get("JENKINS_HOST", "https://jenkins.mintel.ad")
 # e.g. EVERESTUI_jobs/web
 multibranch_job = os.environ["MULTIBRANCH_JOB"]
+# control the output
+show_debug_info = not(os.environ.get("JENKINS_NODEBUG", False))
+# show Jenkins console log, eg to parse coverage
+show_console_log = os.environ.get("JENKINS_CONSOLE_OUTPUT", False)
 # e.g. CFD-4563
 branch = os.environ["CI_COMMIT_REF_NAME"]
 # full commit SHA
@@ -63,9 +67,10 @@ while True:
 print(f"Time to find build {datetime.datetime.now() - start}")
 start = datetime.datetime.now()
 
+build_id = int(build["id"])
 while True:
     try:
-        build = server.get_build_info(job, int(build["id"]))
+        build = server.get_build_info(job, build_id)
     except exceptions.RequestException:
         pass
     if build["result"] is not None and not build["building"]:
@@ -74,6 +79,15 @@ while True:
 
 print(f"Time to finish build {datetime.datetime.now() - start}")
 
+if show_debug_info:
+    pprint(build)
+
+if show_console_log:
+    try:
+        console_log = server.get_build_console_output(job, build_id)
+        print(console_log)
+    except (JenkinsException, exceptions.RequestException):
+        pass
+
 result = build["result"]
-pprint(build)
 exit(0 if result == "SUCCESS" else 1)
