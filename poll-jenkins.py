@@ -29,6 +29,11 @@ branch = os.environ["CI_COMMIT_REF_NAME"]
 # full commit SHA
 commit = os.environ["CI_COMMIT_SHA"]
 
+# this is to stop the resource consumption until we get it sorted
+if os.environ["CI_PROJECT_PATH"].startswith("mintel/"):
+    if not multibranch_job.startswith("EVERESTUI_jobs/"):
+        print("ERROR: The gitlab-jenkins-poller is disabled, see the 'wg ci cd' flow, contact Oliver if necissary.")
+        exit(1)
 
 def find_build(job, commit):
     """"
